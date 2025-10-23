@@ -239,52 +239,52 @@
 
     <!-- JavaScript -->
     <script>
-        // Google Sheets API URL
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz_UQeniwdOd5YXREin01z5IF62BgZ7NXEkPYr4JEG6k5PISJP_oOMCL40_Eb2zzc4r3w/exec';
-
-        // Email form handling
+        // Email form handling with POST method
         document.getElementById('waitlistForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const email = document.getElementById('emailInput').value;
-            const successMessage = document.getElementById('successMessage');
             const submitButton = this.querySelector('button[type="submit"]');
+            const successMessage = document.getElementById('successMessage');
 
-            // Disable submit button
+            const originalButtonText = submitButton.innerHTML;
             submitButton.disabled = true;
-            submitButton.textContent = 'Joining...';
+            submitButton.innerHTML = 'Joining...';
 
             try {
-                // Send to Google Sheets with URLSearchParams
-                const params = new URLSearchParams();
-                params.append('email', email);
-                params.append('timestamp', new Date().toISOString());
-                params.append('source', 'Landing Page');
+                const formData = new FormData();
+                formData.append('email', email);
+                formData.append('timestamp', new Date().toISOString());
+                formData.append('source', 'Landing Page');
 
-                const response = await fetch(scriptURL + '?' + params.toString(), {
-                    method: 'GET'
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbz_UQeniwdOd5YXREin01z5IF62BgZ7NXEkPYr4JEG6k5PISJP_oOMCL40_Eb2zzc4r3w/exec';
+
+                console.log('📧 Submitting email:', email);
+
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
                 });
 
                 const data = await response.json();
-                console.log('Success!', data);
+                console.log('📥 Response:', data);
 
-                // Show success message
-                successMessage.classList.remove('hidden');
-                this.reset();
+                if (data.result === 'success') {
+                    successMessage.classList.remove('hidden');
+                    this.reset();
+                    setTimeout(() => successMessage.classList.add('hidden'), 5000);
+                } else if (data.result === 'duplicate') {
+                    alert('You\'re already on the waitlist! We\'ll notify you when we launch. 🎉');
+                } else {
+                    alert('Please enter a valid email address.');
+                }
 
-                // Re-enable button
-                submitButton.disabled = false;
-                submitButton.textContent = 'Join Waitlist';
-
-                // Hide message after 5 seconds
-                setTimeout(() => {
-                    successMessage.classList.add('hidden');
-                }, 5000);
             } catch (error) {
-                console.error('Error!', error.message);
-                alert('Oops! Something went wrong. Please try again.');
+                console.error('❌ Error:', error);
+                alert('Something went wrong. Please try again!');
+            } finally {
                 submitButton.disabled = false;
-                submitButton.textContent = 'Join Waitlist';
+                submitButton.innerHTML = originalButtonText;
             }
         });
     </script>
