@@ -234,24 +234,53 @@
 
     <!-- JavaScript -->
     <script>
+        // Google Sheets API URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz_UQeniwdOd5YXREin01z5IF62BgZ7NXEkPYr4JEG6k5PISJP_oOMCL40_Eb2zzc4r3w/exec';
+
         // Email form handling
         document.getElementById('waitlistForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const email = document.getElementById('emailInput').value;
             const successMessage = document.getElementById('successMessage');
+            const submitButton = this.querySelector('button[type="submit"]');
 
-            // Here you would normally send this to your backend/email service
-            console.log('Email submitted:', email);
+            // Disable submit button
+            submitButton.disabled = true;
+            submitButton.textContent = 'Joining...';
 
-            // Show success message
-            successMessage.classList.remove('hidden');
-            this.reset();
+            // Create form data
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('timestamp', new Date().toISOString());
 
-            // Hide message after 5 seconds
-            setTimeout(() => {
-                successMessage.classList.add('hidden');
-            }, 5000);
+            // Submit to Google Sheets
+            fetch(scriptURL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success!', data);
+                // Show success message
+                successMessage.classList.remove('hidden');
+                this.reset();
+
+                // Re-enable button
+                submitButton.disabled = false;
+                submitButton.textContent = 'Join Waitlist';
+
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                }, 5000);
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('Oops! Something went wrong. Please try again.');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Join Waitlist';
+            });
         });
     </script>
 
