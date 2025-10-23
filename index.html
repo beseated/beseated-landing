@@ -243,7 +243,7 @@
         const scriptURL = 'https://script.google.com/macros/s/AKfycbz_UQeniwdOd5YXREin01z5IF62BgZ7NXEkPYr4JEG6k5PISJP_oOMCL40_Eb2zzc4r3w/exec';
 
         // Email form handling
-        document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+        document.getElementById('waitlistForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const email = document.getElementById('emailInput').value;
@@ -254,19 +254,20 @@
             submitButton.disabled = true;
             submitButton.textContent = 'Joining...';
 
-            // Create form data
-            const formData = new FormData();
-            formData.append('email', email);
-            formData.append('timestamp', new Date().toISOString());
+            try {
+                // Send to Google Sheets with URLSearchParams
+                const params = new URLSearchParams();
+                params.append('email', email);
+                params.append('timestamp', new Date().toISOString());
+                params.append('source', 'Landing Page');
 
-            // Submit to Google Sheets
-            fetch(scriptURL, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
+                const response = await fetch(scriptURL + '?' + params.toString(), {
+                    method: 'GET'
+                });
+
+                const data = await response.json();
                 console.log('Success!', data);
+
                 // Show success message
                 successMessage.classList.remove('hidden');
                 this.reset();
@@ -279,13 +280,12 @@
                 setTimeout(() => {
                     successMessage.classList.add('hidden');
                 }, 5000);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error!', error.message);
                 alert('Oops! Something went wrong. Please try again.');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Join Waitlist';
-            });
+            }
         });
     </script>
 
