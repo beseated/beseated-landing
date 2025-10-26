@@ -125,10 +125,25 @@
             align-items: center;
         }
 
+        #logo-link {
+            display: inline-flex;
+            align-items: center;
+        }
+
         /* Mobile: Center logo */
         @media (max-width: 767px) {
             #header-container {
                 justify-content: center;
+                width: 100%;
+            }
+
+            #logo-link {
+                display: block;
+                text-align: center;
+            }
+
+            #logo-link img {
+                margin: 0 auto;
             }
         }
 
@@ -152,7 +167,7 @@
         <header class="p-6 md:p-8">
             <div class="max-w-7xl mx-auto" id="header-container">
                 <!-- Logo -->
-                <a href="/" class="flex items-center transition-opacity hover:opacity-80">
+                <a href="/" id="logo-link" class="transition-opacity hover:opacity-80">
                     <img src="beseated-logo.svg" alt="BeSeated - Hospitality Management Platform" class="w-44 md:w-52 h-auto">
                 </a>
 
