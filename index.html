@@ -118,6 +118,17 @@
         .pulse-slow {
             animation: pulse 3s ease-in-out infinite;
         }
+
+        /* Mobile logo centering */
+        @media (max-width: 768px) {
+            header .max-w-7xl {
+                text-align: center;
+            }
+
+            header a[href="/"] {
+                margin: 0 auto;
+            }
+        }
     </style>
 </head>
 <body class="bg-dark text-white">
