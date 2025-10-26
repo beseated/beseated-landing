@@ -118,42 +118,6 @@
         .pulse-slow {
             animation: pulse 3s ease-in-out infinite;
         }
-
-        /* Header layout control */
-        #header-container {
-            display: flex;
-            align-items: center;
-        }
-
-        #logo-link {
-            display: inline-flex;
-            align-items: center;
-        }
-
-        /* Mobile: Center logo */
-        @media (max-width: 767px) {
-            #header-container {
-                justify-content: center;
-                width: 100%;
-                max-width: none;
-            }
-
-            #logo-link {
-                display: block;
-                text-align: center;
-            }
-
-            #logo-link img {
-                margin: 0 auto;
-            }
-        }
-
-        /* Desktop: Logo left, social right */
-        @media (min-width: 768px) {
-            #header-container {
-                justify-content: space-between;
-            }
-        }
     </style>
 </head>
 <body class="bg-dark text-white">
@@ -166,9 +130,9 @@
 
         <!-- Header -->
         <header class="p-6 md:p-8">
-            <div class="max-w-7xl mx-auto" id="header-container">
+            <div class="flex justify-center md:justify-between items-center w-full mx-auto md:max-w-7xl">
                 <!-- Logo -->
-                <a href="/" id="logo-link" class="transition-opacity hover:opacity-80">
+                <a href="/" class="transition-opacity hover:opacity-80">
                     <img src="beseated-logo.svg" alt="BeSeated - Hospitality Management Platform" class="w-44 md:w-52 h-auto">
                 </a>
 
