@@ -119,14 +119,18 @@
             animation: pulse 3s ease-in-out infinite;
         }
 
-        /* Mobile logo centering */
+        /* Mobile logo centering - FORCE CENTER */
         @media (max-width: 768px) {
             header .max-w-7xl {
-                text-align: center;
+                display: flex !important;
+                justify-content: center !important;
+                width: 100% !important;
             }
 
             header a[href="/"] {
-                margin: 0 auto;
+                display: block !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
             }
         }
     </style>
