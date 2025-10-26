@@ -130,11 +130,20 @@
 
         <!-- Header -->
         <header class="p-6 md:p-8">
-            <div class="w-full flex justify-center md:justify-start md:max-w-7xl md:mx-auto">
-                <a href="/" class="inline-block">
-                    <img src="beseated-logo.svg" alt="BeSeated" class="w-44 md:w-52 h-auto">
+            <div style="text-align: center; width: 100%;">
+                <a href="/" style="display: inline-block;">
+                    <img src="beseated-logo.svg" alt="BeSeated" style="width: 176px; height: auto;">
                 </a>
             </div>
+            <style>
+            @media (min-width: 768px) {
+                header > div {
+                    text-align: left !important;
+                    max-width: 80rem;
+                    margin: 0 auto;
+                }
+            }
+            </style>
         </header>
 
         <!-- Hero Section -->
